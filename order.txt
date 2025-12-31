@@ -1,0 +1,148 @@
+import React, { useState, useRef, useEffect } from 'react';
+import { View, Text, TouchableOpacity, Animated, StyleSheet, Dimensions, FlatList, Image, ActivityIndicator } from 'react-native';
+import { Upload } from 'phosphor-react-native';
+import Header from '../components/Header';
+import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const OrderScreen = () => {
+  const navigation = useNavigation();
+  const [selectedTab, setSelectedTab] = useState('Ativos');
+  const [carts, setCarts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCarts = async () => {
+      try {
+        const token = await AsyncStorage.getItem("token");
+        if (!token) return console.warn("Token não encontrado.");
+
+        const response = await fetch("http://192.168.1.60:5000/api/carts/buyer/my-carts", {
+          headers: { Authorization: token },
+        });
+
+        const data = await response.json();
+        setCarts(data);
+      } catch (error) {
+        console.error("Erro ao buscar carrinhos:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCarts();
+  }, []);
+
+  const handleItemPress = (item) => {
+    console.log("Carrinho selecionado:", item);
+    navigation.navigate("MyOrder", { cart: item }); // Envie os dados se necessário
+  };
+
+  const filteredCarts = carts.filter(cart =>
+    selectedTab === 'Ativos' ? !cart.isFinished : cart.isFinished
+  );
+
+  const renderOrderItem = ({ item }) => {
+    const imageUrl = item.imageUrls?.[0]
+      ? { uri: `http://192.168.1.60:5000/${item.imageUrls[0].replace(/\\/g, '/')}` }
+      : require('../../assets/imagens/kratos.png'); // Fallback
+
+    return (
+      <View style={styles.orderItem}>
+        <Image source={imageUrl} style={styles.orderItemImage} />
+        <View style={styles.orderItemDetails}>
+          <Text style={styles.orderItemTitle}>{item.cartName}</Text>
+          <Text style={styles.itemSpace}>{item.platform}</Text>
+          <Text style={styles.itemSpace}>Taxa: {item.exchangeRate} Kz</Text>
+          <Text style={styles.itemSpace}>Vendedor: {item.seller?.name}</Text>
+        </View>
+        <View style={styles.orderItemActions}>
+          <TouchableOpacity style={styles.actionButton} onPress={() => handleItemPress(item)}>
+            <Text style={styles.actionTitle}>Seguir pedido</Text>
+            <Upload size={20} color="#FFF" />
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  };
+
+  const tabIndicator = useRef(new Animated.Value(0)).current;
+  const windowWidth = Dimensions.get('window').width;
+  const tabWidth = windowWidth / 2 - 10;
+
+  const handleTabPress = (tabName) => {
+    setSelectedTab(tabName);
+    Animated.spring(tabIndicator, {
+      toValue: tabName === 'Ativos' ? 0 : tabWidth,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  return (
+    <View style={styles.container}>
+      <Header page={'Meus Pedidos'} />
+      <View style={styles.tabsContainer}>
+        <View style={styles.tabUnderline} />
+        <TouchableOpacity style={styles.tab} onPress={() => handleTabPress('Ativos')}>
+          <Text style={[styles.tabText, selectedTab === 'Ativos' && styles.activeTabText]}>
+            Ativos
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.tab} onPress={() => handleTabPress('Completos')}>
+          <Text style={[styles.tabText, selectedTab === 'Completos' && styles.activeTabText]}>
+            Completos
+          </Text>
+        </TouchableOpacity>
+        <Animated.View
+          style={[
+            styles.tabIndicator,
+            { width: tabWidth, transform: [{ translateX: tabIndicator }] },
+          ]}
+        />
+      </View>
+
+      {loading ? (
+        <ActivityIndicator size="large" color="#704F38" />
+      ) : (
+        <FlatList
+          data={filteredCarts}
+          renderItem={renderOrderItem}
+          keyExtractor={(item) => item._id}
+          style={styles.orderList}
+        />
+      )}
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: { flex: 1, backgroundColor: '#fff', paddingHorizontal: "2.2%", paddingTop: 40 },
+  tabsContainer: { flexDirection: 'row', marginBottom: 20, position: 'relative' },
+  tab: { flex: 1, justifyContent: 'center', alignItems: 'center', paddingVertical: 10 },
+  tabText: { fontSize: 16, color: 'grey', fontFamily: 'Poppins_400Regular' },
+  activeTabText: { color: 'black', fontFamily: 'Poppins_600SemiBold' },
+  tabIndicator: { height: 4, backgroundColor: '#704F38', position: 'absolute', bottom: 0 },
+  orderList: { flex: 1 },
+  orderItem: {
+    flexDirection: 'row',
+    padding: "6%",
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: '#E8E8E8',
+  },
+  orderItemImage: { width: 80, height: 80, marginRight: 10, borderRadius: 8 },
+  orderItemDetails: { flex: 1 },
+  orderItemTitle: { fontSize: 16, fontWeight: 'bold', fontFamily: 'Poppins_600SemiBold' },
+  itemSpace: { paddingBottom: 5, color: "#878787", fontFamily: 'Poppins_400Regular' },
+  orderItemActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: "#704F38",
+    padding: 10,
+    borderRadius: 20,
+  },
+  actionButton: { flexDirection: "row", alignItems: "center", justifyContent: "center" },
+  actionTitle: { color: "white", marginRight: 6, fontFamily: 'Poppins_400Regular' },
+});
+
+export default OrderScreen;

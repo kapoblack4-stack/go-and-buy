@@ -1,0 +1,29 @@
+useEffect(() => {
+  console.log("Cart data received:", cart);
+
+  if (cart && cart.buyerCartProgress) {
+    const mappedBuyers = cart.buyerCartProgress.map((item, index) => {
+      console.log(`\n📦 Comprador ${index + 1}`);
+      console.log("ID:", item._id || index.toString());
+      console.log("Buyer ID:", item.buyer || 'Sem buyer ID');
+      console.log("Nome:", item.buyer?.name || 'Nome não disponível'); // Aqui vai dar sempre "Nome não disponível" pois não vem o nome
+      console.log("Carrinho:", cart.cartName || 'Carrinho sem nome');
+      console.log("Status do Pedido:", item.status || 'Sem status');
+      console.log("Preço:", item.price ? `${item.price} AOA` : 'Pendente');
+      console.log("Avatar:", item.buyer?.avatar || 'Sem avatar');
+
+      return {
+        id: item._id || index.toString(),
+        name: item.buyer?.name || 'Nome não disponível',
+        cartStatus: cart.cartName || 'Carrinho sem nome',
+        orderStatus: item.status || 'Sem status',
+        price: item.price ? `${item.price} AOA` : 'Pendente',
+        avatar: item.buyer?.avatar
+          ? { uri: item.buyer.avatar }
+          : require('../../../assets/imagens/james.png'),
+      };
+    });
+
+    setBuyers(mappedBuyers);
+  }
+}, [cart]);
