@@ -1,7 +1,7 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-// ✅ Troque aqui apenas quando mudar o IP
-export const API_URL = 'http://192.168.1.10:5000/api';
+// ✅ URL da API em produção (Render)
+export const API_URL = 'https://go-and-buy.onrender.com/api';
 
 const api = axios.create({
   baseURL: API_URL,
