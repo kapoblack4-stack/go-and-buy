@@ -31,7 +31,7 @@ import {
   Bell,
 } from "phosphor-react-native";
 import { Check, PencilSimpleLine } from "phosphor-react-native";
-const profileImageUrl = require("../../assets/imagens/james.png");
+const profileImageUrl = require("../../assets/imagens/logo.png");
 import Header from "../components/Header";
 import { useNavigation } from "@react-navigation/native";
 
@@ -137,7 +137,7 @@ const ProfileScreen = () => {
       const url = user.profileImage.replace(/\\/g, '/');
       return { uri: url };
     }
-    return require("../../assets/imagens/james.png");
+    return require("../../assets/imagens/logo.png");
   }
 
   // Log para depuração do objeto user

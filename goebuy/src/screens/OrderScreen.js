@@ -282,7 +282,7 @@ const filteredCarts = carts.filter(cart => {
   const renderOrderItem = ({ item }) => {
   const imageUrl = item.imageUrls?.[0]
     ? { uri: `${BASE_URL}/${item.imageUrls[0].replace(/\\/g, '/')}` }
-    : require('../../assets/imagens/kratos.png');
+    : require('../../assets/imagens/logo.png');
 
   const normalizedUserId = String(userId || "").trim();
   

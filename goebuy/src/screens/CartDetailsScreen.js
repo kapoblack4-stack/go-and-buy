@@ -291,7 +291,7 @@ const CartDetailsScreen = ({ route }) => {
                   source={
                     cartInfo.imageUrls?.[0]
                       ? { uri: `${BASE_URL}/${cartInfo.imageUrls[0].replace(/\\/g, '/')}` }
-                      : require('../../assets/imagens/kratos.png')
+                      : require('../../assets/imagens/logo.png')
                   }
                   style={styles.cartImage}
                   resizeMode="cover"

@@ -39,7 +39,7 @@ const DetailsCarrinhoScreen = () => {
     avaliacao: 3, // Número de estrelas cheias
     totalCarrinhos: "99",
     imagemCarrinho: require("../../assets/imagens/carrinho1.png"), // Substitua pelo caminho correto da sua imagem
-    imagemVendedor: require("../../assets/imagens/james.png"), // Substitua pelo caminho correto da sua imagem
+    imagemVendedor: require("../../assets/imagens/logo.png"), // Substitua pelo caminho correto da sua imagem
   };
 
   const fotos = [

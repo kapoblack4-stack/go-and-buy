@@ -390,7 +390,7 @@ const DetailOrder = ({ route }) => {
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Image
                 source={
-                  buyer.avatar || require("../../../assets/imagens/james.png")
+                  buyer.avatar || require("../../../assets/imagens/logo.png")
                 }
                 style={styles.vendedorImage}
                 resizeMode="cover"

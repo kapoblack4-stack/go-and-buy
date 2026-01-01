@@ -217,7 +217,7 @@ const OrdersScreen = ({ route }) => {
               price: item.price ? `${item.price} AOA` : "Pendente",
               avatar: avatarUri
                 ? { uri: avatarUri }
-                : require("../../../assets/imagens/james.png"),
+                : require("../../../assets/imagens/logo.png"),
               orders: buyerOrders,
               buyerId: buyerId || "ID não disponível",
             };
@@ -352,7 +352,7 @@ const OrdersScreen = ({ route }) => {
                       <Image 
                         source={
                           imageErrors[item.id] || !item.avatar?.uri
-                            ? require("../../../assets/imagens/james.png")
+                            ? require("../../../assets/imagens/logo.png")
                             : item.avatar
                         } 
                         style={styles.modernAvatar}

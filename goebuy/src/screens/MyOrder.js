@@ -55,7 +55,7 @@ const MyOrder = ({ route }) => {
       // Atualiza imagem e vendedor
       const imageUrl = cartAtualizado.imageUrls?.[0]
         ? { uri: `${BASE_URL}/${cartAtualizado.imageUrls[0].replace(/\\/g, "/")}` }
-        : require("../../assets/imagens/kratos.png");
+        : require("../../assets/imagens/logo.png");
       setImageUrl(imageUrl);
       if (cartAtualizado?.seller) {
         fetch(`${BASE_URL}/api/auth/${cartAtualizado.seller}`)
@@ -116,7 +116,7 @@ const MyOrder = ({ route }) => {
     totalCarrinhos: "99",
     state: "progresso",
     imagemCarrinho: require("../../assets/imagens/carrinho1.png"),
-    imagemVendedor: require("../../assets/imagens/james.png"),
+    imagemVendedor: require("../../assets/imagens/logo.png"),
     feito: "12/12/2023",
     aceite: "13/12/2023",
     progresso: "14/12/2023",
@@ -347,7 +347,7 @@ const MyOrder = ({ route }) => {
                 />
               ) : (
                 <Image
-                  source={require("../../assets/imagens/james.png")}
+                  source={require("../../assets/imagens/logo.png")}
                   style={styles.vendedorImage}
                 />
               )}
