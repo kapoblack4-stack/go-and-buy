@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const EmailVerification = require('../models/EmailVerification');
 const PasswordReset = require('../models/PasswordReset');
-const { generateOTP, sendVerificationEmail, sendPasswordResetEmail } = require('../services/emailService-sendgrid');
+const { generateOTP, sendVerificationEmail, sendPasswordResetEmail, sendAccountActivatedEmail } = require('../services/emailService-sendgrid');
 const multer = require('multer');
 const path = require('path');
 
