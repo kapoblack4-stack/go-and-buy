@@ -50,7 +50,7 @@ export default function ChatScreen({ route, navigation }) {
   function getProfileImage(user) {
     if (user?.profileImage) {
       const url = user.profileImage.replace(/\\/g, '/');
-      return { uri: url };
+      return { uri: `${BASE_URL}/${url}` };
     }
     return james;
   }

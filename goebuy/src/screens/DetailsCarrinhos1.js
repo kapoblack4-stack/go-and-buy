@@ -983,7 +983,7 @@ const DetailsCarrinhoScreen1 = ({ route }) => {
                   {/* Mostrar primeira imagem em vez de "Item X" */}
                   {item.imagens && item.imagens.length > 0 ? (
                     <Image 
-                      source={{ uri: item.imagens[0] }} 
+                      source={{ uri: `${BASE_URL}/${item.imagens[0].replace(/\\/g, "/")}` }} 
                       style={styles.itemImage}
                       resizeMode="cover"
                     />

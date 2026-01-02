@@ -105,7 +105,7 @@ const CompradorChatsScreen = ({ navigation }) => {
                 otherUser = {
                   _id: userData._id,
                   name: userData.name || 'Vendedor',
-                  avatar: userData.avatar || null
+                  avatar: userData.profileImage || null
                 };
               }
 

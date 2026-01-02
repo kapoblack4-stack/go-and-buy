@@ -108,7 +108,7 @@ const ChatsScreen = ({ navigation }) => {
                 otherUser = {
                   _id: userData._id,
                   name: userData.name || 'Usuário',
-                  avatar: userData.avatar || null
+                  avatar: userData.profileImage || null
                 };
               }
 

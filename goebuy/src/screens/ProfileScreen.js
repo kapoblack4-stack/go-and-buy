@@ -135,7 +135,7 @@ const ProfileScreen = () => {
     if (user?.profileImage) {
       // Sempre troca todas as barras invertidas por barras normais
       const url = user.profileImage.replace(/\\/g, '/');
-      return { uri: url };
+      return { uri: `${BASE_URL}/${url}` };
     }
     return require("../../assets/imagens/logo.png");
   }
