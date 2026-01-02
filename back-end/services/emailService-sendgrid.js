@@ -143,8 +143,76 @@ const sendPasswordResetEmail = async (email, resetToken) => {
   }
 };
 
+// Enviar email de conta ativada
+const sendAccountActivatedEmail = async (email, userName = '') => {
+  try {
+    console.log('[SENDGRID] 📤 Enviando email de conta ativada...');
+
+    if (process.env.NODE_ENV === 'development') {
+      console.log('✅ Conta ativada para:', email);
+      return { success: true, messageId: 'dev-mode-' + Date.now() };
+    }
+
+    if (!process.env.SENDGRID_API_KEY) {
+      console.log('✅ Conta ativada para:', email);
+      return { success: true, messageId: 'console-mode-' + Date.now() };
+    }
+
+    const msg = {
+      to: email,
+      from: process.env.EMAIL_USER || 'noreply@goandbuy.com',
+      subject: 'Bem-vindo ao GoandBuy! 🎉',
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="utf-8">
+          <title>Bem-vindo</title>
+        </head>
+        <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0;">
+          <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+            <div style="background-color: #704F38; color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0;">
+              <h1 style="margin: 0;">🎉 Bem-vindo ao GoandBuy!</h1>
+            </div>
+            
+            <div style="background-color: #f9f9f9; padding: 30px; border-radius: 0 0 8px 8px;">
+              <p>Olá${userName ? ' ' + userName : ''}! 👋</p>
+              
+              <p>Sua conta foi ativada com sucesso! Agora você pode aproveitar todos os recursos do GoandBuy.</p>
+              
+              <div style="background-color: #d4edda; border: 1px solid #c3e6cb; padding: 15px; border-radius: 5px; margin: 20px 0;">
+                <p style="margin: 0;"><strong>✅ Sua conta está ativa!</strong></p>
+                <p style="margin: 10px 0 0 0;">Você já pode começar a usar o aplicativo.</p>
+              </div>
+              
+              <p style="color: #666; font-size: 14px; margin-top: 30px;">
+                Atenciosamente,<br>
+                <strong>Equipe GoandBuy</strong>
+              </p>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px; font-size: 12px; color: #666;">
+              <p>© ${new Date().getFullYear()} GoandBuy. Todos os direitos reservados.</p>
+            </div>
+          </div>
+        </body>
+        </html>
+      `,
+    };
+
+    const result = await sgMail.send(msg);
+    console.log('[SENDGRID] ✅ Email de conta ativada enviado!');
+    return { success: true, messageId: result[0].headers['x-message-id'] };
+
+  } catch (error) {
+    console.error('[SENDGRID] ❌ Erro ao enviar email:', error.message);
+    throw error;
+  }
+};
+
 module.exports = {
   generateOTP,
   sendVerificationEmail,
-  sendPasswordResetEmail
+  sendPasswordResetEmail,
+  sendAccountActivatedEmail
 };
